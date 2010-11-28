@@ -74,3 +74,55 @@
   (mapc #'load (directory-files user-specific-dir nil ".*el$")))
 
 ;;; init.el ends here
+
+;; BluePojo configs start here
+
+
+;; Full screen
+(defun switch-full-screen ()
+      (interactive)
+      (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
+    (global-set-key [f11] 'switch-full-screen)
+
+;; Line highlight
+(global-hl-line-mode 1)
+
+;; Line numbers in margin
+(require 'linum)
+(global-linum-mode)
+
+;; Kill the tool/menubars.  Yay screen real estate.
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+;; Colors
+(setq default-frame-alist 
+       (append default-frame-alist 
+              '((foreground-color . "#dee") 
+                (background-color . "#022")
+		(cursor-color . "ivory2"))))
+(set-face-background 'region "#033")
+(set-face-background 'hl-line "#011")
+
+;; Disable splash screen
+(setq inhibit-startup-message t)
+
+;; Set scratch message
+(setq initial-scratch-message ";; Scratch - This is not a file ;;\n;;  Welcome to BluePojo.emacs   ;;\n\n\n")
+
+;; General purpose extensions
+(require 'ido)
+    (ido-mode t)
+
+;; = Custom Keybindings
+;; Reverse Return
+(fset 'unreturn
+      [?\C-p ?\C-e ?\C-j])
+(define-key global-map [(control shift return)] 'unreturn)
+;; Don't linebreak the text when returning in the middle of the line
+(fset 'dont-break
+      [?\C-e ?\C-j])
+(define-key global-map [(shift return)] 'dont-break)
+;; Comment / Uncomment Region
+(define-key global-map
+  [?\C-c ?\C-c] 'comment-region)
